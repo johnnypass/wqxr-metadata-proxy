@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WQXR Live Stream</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 40px; }
+        #metadata { font-size: 20px; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>WQXR Live Stream</h1>
+    
+    <audio controls>
+        <source src="https://stream.wqxr.org/wqxr" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="metadata">Fetching metadata...</div>
+
+    <script>
+        async function fetchMetadata() {
+            try {
+                const response = await fetch("https://wqxr-metadata-proxy.vercel.app/api/metadata");
+                const data = await response.json();
+                document.getElementById("metadata").innerText = `Now Playing: ${data.title}`;
+            } catch (error) {
+                document.getElementById("metadata").innerText = "Error fetching metadata";
+                console.error("Metadata fetch error:", error);
+            }
+        }
+
+        setInterval(fetchMetadata, 10000);
+        fetchMetadata();
+    </script>
+</body>
+</html>
