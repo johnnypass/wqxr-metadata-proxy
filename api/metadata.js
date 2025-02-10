@@ -4,17 +4,31 @@ export default async function handler(req, res) {
     const streamUrl = "https://stream.wqxr.org/wqxr";
 
     try {
-        const response = await fetch(streamUrl, { headers: { "Icy-MetaData": "1" } });
-        const buffer = await response.arrayBuffer();
-        const text = new TextDecoder().decode(buffer);
-        
-        console.log("Raw metadata:", text);
+        // Open stream connection with metadata request
+        const response = await fetch(streamUrl, {
+            headers: { "Icy-MetaData": "1" } // Request ICY metadata
+        });
 
-        const match = text.match(/StreamTitle='(.*?)';/);
-        const title = match ? match[1] : "No metadata available";
+        const reader = response.body.getReader();
+        let metadata = "No metadata available";
 
+        // Read the stream and extract metadata
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const text = new TextDecoder().decode(value);
+            const match = text.match(/StreamTitle='(.*?)';/);
+            if (match) {
+                metadata = match[1];
+                break; // Stop reading after finding metadata
+            }
+        }
+
+        // Set CORS headers to allow browser access
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.json({ title });
+        res.json({ title: metadata });
+
     } catch (error) {
         console.error("Metadata fetch error:", error);
         res.status(500).json({ error: "Metadata fetch failed" });
