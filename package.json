@@ -1,0 +1,27 @@
+{
+  "name": "wqxr-metadata-proxy",
+  "version": "1.0.0",
+  "description": "wqxr-metadata-proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnnypass/wqxr-metadata-proxy.git"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/johnnypass/wqxr-metadata-proxy/issues"
+  },
+  "homepage": "https://github.com/johnnypass/wqxr-metadata-proxy#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
